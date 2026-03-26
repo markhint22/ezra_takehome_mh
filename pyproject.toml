@@ -1,0 +1,39 @@
+[project]
+name = "ezra-takehome-mh"
+version = "0.1.0"
+description = "Playwright test suite for Ezra test site example"
+authors = [
+    {name = "Mark Hintermeister",email = "Markhint22@yahoo.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.0.2,<10.0.0)",
+    "pytest-playwright (>=0.7.2,<0.8.0)",
+    "playwright (>=1.58.0,<2.0.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
+    "faker (>=40.11.1,<41.0.0)",
+    "pytest-html (>=4.2.0,<5.0.0)",
+    "pytest-rerunfailures (>=16.1,<17.0)",
+    "requests (>=2.33.0,<3.0.0)"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = "test_*"
+markers = [
+    "booking: booking flow tests",
+    "security: auth and data isolation tests"
+]
