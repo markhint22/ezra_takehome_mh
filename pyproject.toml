@@ -35,5 +35,6 @@ python_files = ["test_*.py"]
 python_functions = "test_*"
 markers = [
     "booking: booking flow tests",
-    "security: auth and data isolation tests"
+    "security: auth and data isolation tests",
+    "member_registration: new member enrollments"
 ]

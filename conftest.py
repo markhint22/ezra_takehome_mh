@@ -1,10 +1,12 @@
 """Root conftest.py for pytest."""
+
 from pathlib import Path
 
 import pytest
 from playwright.sync_api import Browser
 
 from utils.env_config import EnvConfig
+from utils.test_data import Member
 from pages.provider_portal.provider_sign_in_page import ProviderSignInPage
 
 AUTH_STATE_DIR = Path(__file__).parent / ".auth"
@@ -25,3 +27,26 @@ def provider_auth_state(browser: Browser) -> Path:
         email=EnvConfig.PROVIDER_USERNAME,
         password=EnvConfig.PROVIDER_PASSWORD
         )
+    page.wait_for_url(f"{EnvConfig.PROVIDER_BASE_URL}/**", timeout=15000)
+
+    context.storage_state(path=str(PROVIDER_AUTH_STATE))
+    context.close()
+    return PROVIDER_AUTH_STATE
+
+@pytest.fixture()
+def provider_page(browser: Browser, provider_auth_state: Path):
+    """Provide a fresh page with auth state loaded for each test."""
+    context = browser.new_context(storage_state=str(provider_auth_state))
+    page = context.new_page()
+    yield page
+    context.close()
+
+@pytest.fixture()
+def member_page(browser: Browser):
+    """Provide a fresh unauthenticated member page."""
+    context = browser.new_context()
+    page = context.new_page()
+    yield page
+    context.close()
+
+
