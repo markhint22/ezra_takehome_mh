@@ -26,6 +26,7 @@ class Member:
         self.password = DEFAULT_PASSWORD
         self.phone_number = fake.numerify("###-###-####")
         self.state = fake.state
+        self.postal_code = fake.postal_code
         self.date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=90).strftime("%m-%d-%Y")
         self.gender = random.choice(["Male", "Female"])
         self.scan_products = scan_products if scan_products else []

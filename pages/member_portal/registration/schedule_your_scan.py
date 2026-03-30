@@ -17,7 +17,7 @@ class ScheduleYourScanPage(MemberBasePage):
     def find_closest_centers_to_me_button(self):
         """Find closest centers to me button"""
         return self.page.get_by_role(role="button", name="find closest centers to me")
-    
+
     @property
     def continue_button(self):
         """Continue Button"""

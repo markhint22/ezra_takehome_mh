@@ -1,7 +1,5 @@
 """Page object for the member join page."""
 
-from playwright.sync_api import expect
-
 from pages.member_portal.member_base_page import MemberBasePage
 from utils.env_config import EnvConfig
 from utils.test_data import Member

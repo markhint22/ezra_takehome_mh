@@ -1,7 +1,9 @@
 """Page object page for Reserve Your Appointment Page."""
 
-from  pages.member_portal.member_base_page import MemberBasePage
+from pages.member_portal.member_base_page import MemberBasePage
 from utils.env_config import EnvConfig
+from utils.stripe_helpers import CardDetails
+
 
 class ReserveYourAppointmentPage(MemberBasePage):
     """Page Object for Reserve Your Appointment Page."""
@@ -31,3 +33,39 @@ class ReserveYourAppointmentPage(MemberBasePage):
     def continue_button(self):
         """Continue Button"""
         return self.page.get_by_role(role="button", name='continue')
+
+
+    #Card paypment card fields
+
+    @property
+    def credit_card_number_textbox(self):
+        """Credit card number textbox"""
+        return self.card_payment_card.locator("#payment-numberInput")
+
+    @property
+    def credit_card_expiration_date_textbox(self):
+        """Credit card expiration date"""
+        return self.card_payment_card.locator("#payment-expiryInput")
+
+    @property
+    def credit_card_security_code(self):
+        """Credit card expiration date"""
+        return self.card_payment_card.locator("#payment-cvcInput")
+
+    @property
+    def credit_card_country_combobox(self):
+        """Credit card country comboBox"""
+        return self.card_payment_card.locator("#payment-countryInput")
+
+    @property
+    def credit_card_postal_code_textbox(self):
+        """Credit card postal code comboBox"""
+        return self.card_payment_card.locator("#payment-postalCodeInput")
+
+    def fill_credit_card_details(self, card: CardDetails, postal_code: str):
+        """Fill in the credit card details."""
+        self.credit_card_number_textbox.fill(card.number)
+        self.credit_card_expiration_date_textbox.fill(card.expiry)
+        self.credit_card_security_code.fill(card.cvc)
+        self.credit_card_postal_code_textbox.fill(postal_code)
+        self.continue_button.click()

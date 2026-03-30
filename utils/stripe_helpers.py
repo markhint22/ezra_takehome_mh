@@ -1,9 +1,28 @@
 """Stripe test card constants from https://docs.stripe.com/testing"""
 
-VALID_CARD = '4242424242424242'
-VALID_EXPIRY = '12/30'
-VALID_CVC = '123'
+class CardDetails:
+    """Class to hold card details for testing."""
+    def __init__(self, number: str, expiry: str, cvc: str):
+        self.number = number
+        self.expiry = expiry
+        self.cvc = cvc
 
-DECLINED_CARD = '4000000000000002'
-INSUFFICIENT_FUNDS_CARD = '4000000000009995'
-EXPIRED_CARD = '4000000000000069'
+VALID_CARD_DETAILS = CardDetails(number="4242424242424242",
+                                expiry="12/30",
+                                cvc="123"
+                                )
+
+DECLINED_CARD_DETAILS = CardDetails(number="4000000000000002",
+                                    expiry="12/30",
+                                    cvc="123"
+                                    )
+
+INSUFFICIENT_FUNDS_CARD_DETAILS = CardDetails(number="4000000000009995",
+                                    expiry="12/30",
+                                    cvc="123"
+                                    )
+
+EXPIRED_CARD_DETAILS = CardDetails(number="4000000000000069",
+                                expiry="12/30",
+                                cvc="123"
+                                )
