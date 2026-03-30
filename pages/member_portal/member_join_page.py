@@ -1,18 +1,15 @@
 """Page object for the member join page."""
 
-from pages.base_page import BasePage
+from playwright.sync_api import expect
+
+from pages.member_portal.member_base_page import MemberBasePage
 from utils.env_config import EnvConfig
 from utils.test_data import Member
 
 
-class MemberJoinPage(BasePage):
+class MemberJoinPage(MemberBasePage):
     """Page object for the member join page."""
     URL = EnvConfig.MEMBER_JOIN_URL
-
-    def navigate(self):
-        """Navigate directly to this page."""
-        self.page.goto(self.URL)
-        self.wait_for_page_load()
 
     @property
     def google_sign_up_button(self):
@@ -42,20 +39,20 @@ class MemberJoinPage(BasePage):
     @property
     def password_textbox(self):
         """Password Textbox"""
-        return self.page.get_by_label("password")
+        return self.page.get_by_role(role="textbox", name="password")
 
     @property
     def terms_of_use_checkbox(self):
         """Terms of Use Checkbox"""
-        return self.page.get_by_role(role="button", name="terms of use")
+        return self.page.get_by_role(role="button", name="I agree to Ezra's terms of use")
 
     @property
     def marketing_emails_checkbox(self):
         """Marketing Emails Agreement Checkbox"""
-        return self.page.get_by_role(role="button", name="marketing communications via email")
+        return self.page.get_by_role(role="button", name="I agree to receive marketing communications via email")
 
     @property
-    def markething_sms_checkbox(self):
+    def marketing_sms_checkbox(self):
         """Marketing SMS Agreement Checkbox"""
         return self.page.get_by_role(role="button", name="marketing messages via telephone and sms")
 
@@ -66,6 +63,7 @@ class MemberJoinPage(BasePage):
 
     def fill_join_form(self, member: Member):
         """Fill the new member join form."""
+        self.wait_for_this_page_url()
         self.first_name_textbox.fill(member.first_name)
         self.last_name_textbox.fill(member.last_name)
         self.email_textbox.fill(member.email)
@@ -73,5 +71,7 @@ class MemberJoinPage(BasePage):
         self.password_textbox.fill(member.password)
         self.terms_of_use_checkbox.click()
         self.marketing_emails_checkbox.click()
-        self.markething_sms_checkbox.click()
+        self.marketing_sms_checkbox.click()
+        self.page.wait_for_timeout(1000)  # Wait for any potential async validation to complete before clicking submit
         self.wait_for_page_load()
+        self.submit_button.click()

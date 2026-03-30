@@ -24,9 +24,10 @@ class Member:
         self.last_name = fake.last_name()
         self.email = fake.email()
         self.password = DEFAULT_PASSWORD
-        self.phone_number = fake.phone_number()
+        self.phone_number = fake.numerify("###-###-####")
+        self.state = fake.state
         self.date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=90).strftime("%m-%d-%Y")
-        self.birth_gender = random.choice(["Male", "Female"])
+        self.gender = random.choice(["Male", "Female"])
         self.scan_products = scan_products if scan_products else []
 
     @property

@@ -1,16 +1,11 @@
 """Page object file for the member sign-in page."""
-from pages.base_page import BasePage
+from pages.member_portal.member_base_page import MemberBasePage
 from utils.env_config import EnvConfig
 
 
-class MemberSignInPage(BasePage):
+class MemberSignInPage(MemberBasePage):
     """Page object for the member sign-in page."""
     URL = EnvConfig.MEMBER_SIGN_IN_URL
-
-    def navigate(self):
-        """Navigate to this page."""
-        self.page.goto(self.URL)
-        self.wait_for_page_load()
 
     @property
     def join_button(self):
@@ -34,6 +29,7 @@ class MemberSignInPage(BasePage):
 
     def login_with_email_and_password(self, email: str, password: str):
         """Sign in member using email and password."""
+        self.wait_for_this_page_url()
         self.email_input.fill(f"{email}")
         self.password_input.fill(f"{password}")
         self.submit_button.click()

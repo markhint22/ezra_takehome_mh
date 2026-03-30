@@ -1,16 +1,11 @@
 """Page object file for the provider sign-in page."""
-from pages.base_page import BasePage
+from pages.provider_portal.provider_base_page import ProviderBasePage
 from utils.env_config import EnvConfig
 
 
-class ProviderSignInPage(BasePage):
+class ProviderSignInPage(ProviderBasePage):
     """Page object for the provider sign-in page."""
     URL = EnvConfig.PROVIDER_SIGN_IN_URL
-
-    def navigate(self):
-        """Navigate to this page."""
-        self.page.goto(self.URL)
-        self.wait_for_page_load()
 
     @property
     def email_input(self):
