@@ -26,10 +26,10 @@ class TestMemberRegistration:
         join_page.add_basic_member_info(member)
 
         select_scan_page = SelectYourScanPage(member_page)
-        select_scan_page.select_your_scan(member)
+        selected_scan_type = select_scan_page.select_your_scan(member)["selected_scan_type"]
 
         schedule_scan_page = ScheduleYourScanPage(member_page)
-        schedule_scan_page.schedule_your_scan()
+        selected_schedule_details = schedule_scan_page.schedule_your_scan()
 
         reserve_your_appointment_page = ReserveYourAppointmentPage(member_page)
         reserve_your_appointment_page.add_credit_card(stripe_helpers.VALID_CARD_DETAILS,
@@ -38,11 +38,12 @@ class TestMemberRegistration:
         scan_confirm_page = ScanConfirmPage(member_page)
         confirmed_appointment_details = scan_confirm_page.get_confirmed_appointment()
 
-        assert confirmed_appointment_details["scan_type"] == "MRI Scan"
-        assert confirmed_appointment_details["location_name"] == "AMRIC"
-        assert confirmed_appointment_details["location_address"] == "New York, city, NY 10022"
-        assert confirmed_appointment_details["date"] == "Apr 16, 2026"
-        assert confirmed_appointment_details["time"] == "10:30 AM EDT"
+        assert confirmed_appointment_details["confirmed_scan_type"] == selected_scan_type
+        assert confirmed_appointment_details["confirmed_location_name"] == selected_schedule_details["selected_location_name"]
+        assert confirmed_appointment_details["confirmed_location_address"].replace("  ", " ") == selected_schedule_details["selected_location_address"].replace("  ", " ")
+        assert confirmed_appointment_details["confirmed_datetime"] == selected_schedule_details["selected_datetime"]
+        assert confirmed_appointment_details["confirmed_time"] == selected_schedule_details["selected_time"]
+        assert confirmed_appointment_details["confirmed_time_zone"] == selected_schedule_details["selected_time_zone"]
 
         scan_confirm_page.begin_medical_questionnaire_button.click()
 

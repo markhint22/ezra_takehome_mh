@@ -1,6 +1,7 @@
 """Page Object page for Scan Confirm Page."""
 
 import re
+from datetime import datetime
 
 from playwright.sync_api import expect
 
@@ -59,23 +60,31 @@ class ScanConfirmPage(MemberBasePage):
 
     def parse_date_time_values(self, datetime_str: str):
         """Parse the date and time values from the appointment details."""
-        date_str, separator, time_str_with_timezone = datetime_str.partition("\u2022")
+        date_part, separator, right = datetime_str.partition("\u2022")
         if not separator:
             raise ValueError(f"Unexpected date/time format: '{datetime_str}'")
-        time_str, time_zone_str = time_str_with_timezone.rsplit(" ", 1)
-        return date_str.strip(), time_str.strip(), time_zone_str.strip()
+        
+        time_part, tz = right.strip().rsplit(" ", 1)
+        combined = f"{date_part.strip()} {time_part.strip()}"
+
+        for fmt in ("%b %d, %Y %I:%M %p", "%B %d, %Y %I:%M %p"):
+            try:
+                return datetime.strptime(combined, fmt), tz.strip()
+            except ValueError:
+                pass
+
+        raise ValueError(f"Unsupported datetime format: {combined!r}")
 
     def get_confirmed_appointment(self):
         """Get the appointment details for assertions."""
         expect(self.appointment_header).to_be_visible(timeout=10000)
 
-        date_parsed, time_parsed, time_zone_parsed = self.parse_date_time_values(
+        confirmed_datetime, confirmed_timezone = self.parse_date_time_values(
             self.appointment_datetime.text_content())
         return {
-            "scan_type": self.parse_scan_type(self.appointment_header.text_content()),
-            "location_name": self.appointment_location_name.text_content(),
-            "location_address": self.appointment_location_address.text_content(),
-            "date": date_parsed,
-            "time": time_parsed,
-            "time_zone": time_zone_parsed
+            "confirmed_scan_type": self.parse_scan_type(self.appointment_header.text_content()),
+            "confirmed_location_name": self.appointment_location_name.text_content(),
+            "confirmed_location_address": self.appointment_location_address.text_content(),
+            "confirmed_datetime": confirmed_datetime,
+            "confirmed_time_zone": confirmed_timezone
         }

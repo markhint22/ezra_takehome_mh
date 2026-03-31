@@ -42,18 +42,19 @@ class SelectYourScanPage(MemberBasePage):
             has_text=re.compile(f"^{gender}$", re.IGNORECASE)).click()
 
     def select_scan_product(self, product_name: str):
-        """Select one product to scan."""
+        """Select one product to scan and return its title."""
         card = self.page.locator(".encounter-card").filter(has=self.page
             .locator("p.encounter-title", has_text=re.compile(f"^{product_name}$", re.IGNORECASE))
             ).first
-        card_text = card.inner_text().strip()
+        scan_title = card.locator("p.encounter-title").text_content().strip()
         card.click()
-        return card_text
+        return scan_title
 
-    def select_your_scan(self, member: Member):
+    def select_your_scan(self, member: Member) -> dict:
         """Select your scan."""
         self.wait_for_this_page_url()
         self.date_of_birth_textbox.fill(member.date_of_birth.replace("-",""))
         self.select_gender(member.gender)
-        self.select_scan_product(member.scan_product)
+        selected_scan_type = self.select_scan_product(member.scan_product)
         self.continue_button.click()
+        return {"selected_scan_type": selected_scan_type}
