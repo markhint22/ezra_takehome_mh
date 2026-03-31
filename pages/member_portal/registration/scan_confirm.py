@@ -1,5 +1,7 @@
 """Page Object page for Scan Confirm Page."""
 
+import re
+
 from playwright.sync_api import expect
 
 from pages.member_portal.member_base_page import MemberBasePage
@@ -26,7 +28,8 @@ class ScanConfirmPage(MemberBasePage):
     def _details_row(self, label: str):
         """Helper method to get a details row by its label."""
         return self.appointment_details.locator("div.scan-details__row").filter(
-            has=self.appointment_details.locator("p", has_text=label)
+            has=self.page.locator("p", has_text=re.compile(
+                rf"^\s*{re.escape(label)}\s*$", re.IGNORECASE),).first
         )
 
     @property
@@ -47,7 +50,8 @@ class ScanConfirmPage(MemberBasePage):
     @property
     def appointment_datetime(self):
         """Locator for the appointment date and time."""
-        return self._details_row("Date").locator("p").nth(1)
+        row = self._details_row("Date")
+        return row.locator("p:has-text('Date') + p")
 
     def parse_scan_type(self, header_text: str):
         """Parse the scan type from the appointment header text."""
@@ -63,13 +67,14 @@ class ScanConfirmPage(MemberBasePage):
 
     def get_confirmed_appointment(self):
         """Get the appointment details for assertions."""
-        expect(self.appointment_details).to_be_visible()
+        expect(self.appointment_header).to_be_visible(timeout=10000)
+
         date_parsed, time_parsed, time_zone_parsed = self.parse_date_time_values(
-            self.appointment_datetime.inner_text())
+            self.appointment_datetime.text_content())
         return {
-            "scan_type": self.parse_scan_type(self.appointment_header.inner_text()),
-            "location_name": self.appointment_location_name.inner_text(),
-            "location_address": self.appointment_location_address.inner_text(),
+            "scan_type": self.parse_scan_type(self.appointment_header.text_content()),
+            "location_name": self.appointment_location_name.text_content(),
+            "location_address": self.appointment_location_address.text_content(),
             "date": date_parsed,
             "time": time_parsed,
             "time_zone": time_zone_parsed

@@ -54,7 +54,7 @@ class ScheduleYourScanPage(MemberBasePage):
 
     def select_first_active_date(self, max_months: int = 12):
         """Click the first active date in the calendar"""
-        expect(self.calendar).to_be_visible(timeout=5000)
+        expect(self.calendar).to_be_visible(timeout=10000)
         self.page.wait_for_timeout(5000)  # Wait for potential animations to complete
         next_month_button = self.page.locator("div.arrows").locator("button.header-btn").nth(1)
 
@@ -74,7 +74,7 @@ class ScheduleYourScanPage(MemberBasePage):
 
     def select_first_available_time_slot(self):
         """Click the first available time slot available on the selected day."""
-        expect(self.time_slots.first).to_be_visible(timeout=5000)
+        expect(self.time_slots.first).to_be_visible(timeout=10000)
         return self.time_slots.first.click()
 
     def schedule_your_scan(self):
