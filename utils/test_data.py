@@ -11,7 +11,8 @@ class ScanProducts:
     """Products Object."""
     MRI_SCAN = "MRI Scan"
     MRI_SCAN_WITH_SPINE = "MRI Scan with Spine"
-    MRI_SCAN_WITH_SKELETAL_AND_NEUROLOGICAL_ASSESSMENT = "MRI Scan with Skeletal and Neurological Assessment"
+    MRI_SCAN_WITH_SKELETAL_AND_NEUROLOGICAL_ASSESSMENT = (
+        "MRI Scan with Skeletal and Neurological Assessment")
     HEART_SCAN = "Heart CT Scan"
     LUNGS_CT_SCAN = "Lungs CT Scan"
 
@@ -25,8 +26,8 @@ class Member:
         self.email = fake.email()
         self.password = DEFAULT_PASSWORD
         self.phone_number = fake.numerify("###-###-####")
-        self.state = fake.state
-        self.postal_code = fake.postal_code
+        self.state = fake.state()
+        self.postal_code = fake.postalcode_in_state()
         self.date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=90).strftime("%m-%d-%Y")
         self.gender = random.choice(["Male", "Female"])
         self.scan_products = scan_products if scan_products else []

@@ -1,5 +1,7 @@
 """Page Object file for Schedule Your Scan page."""
 
+from playwright.sync_api import expect
+
 from pages.member_portal.member_base_page import MemberBasePage
 from utils.env_config import EnvConfig
 
@@ -55,12 +57,14 @@ class ScheduleYourScanPage(MemberBasePage):
         """Click the first available time slot available on the selected day."""
         return self.page.locator("div.appointments__individual-appointment").first.click()
 
-    def fill_schedule_your_scan_form(self):
-        """Fill the schedule your scan form."""
+    def schedule_your_scan(self):
+        """Schedule your scan."""
         self.wait_for_this_page_url()
         self.find_closest_centers_to_me_button.click()
         self.wait_for_page_load()
+        self.select_first_scan_location_card()
+        self.wait_for_page_load()
         self.select_first_active_date()
         self.select_first_available_time_slot()
-        self.continue_button.wait_for(state="active")
+        expect(self.continue_button).to_be_enabled(timeout=5000)
         self.continue_button.click()

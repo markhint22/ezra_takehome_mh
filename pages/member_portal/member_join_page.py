@@ -47,20 +47,22 @@ class MemberJoinPage(MemberBasePage):
     @property
     def marketing_emails_checkbox(self):
         """Marketing Emails Agreement Checkbox"""
-        return self.page.get_by_role(role="button", name="I agree to receive marketing communications via email")
+        return self.page.get_by_role(role="button",
+                                    name="I agree to receive marketing communications via email")
 
     @property
     def marketing_sms_checkbox(self):
         """Marketing SMS Agreement Checkbox"""
-        return self.page.get_by_role(role="button", name="marketing messages via telephone and sms")
+        return self.page.get_by_role(role="button",
+                                    name="marketing messages via telephone and sms")
 
     @property
     def submit_button(self):
         """Submit button"""
         return self.page.get_by_role(role="button", name="submit")
 
-    def fill_join_form(self, member: Member):
-        """Fill the new member join form."""
+    def add_basic_member_info(self, member: Member):
+        """Add basic member information."""
         self.wait_for_this_page_url()
         self.first_name_textbox.fill(member.first_name)
         self.last_name_textbox.fill(member.last_name)
@@ -70,6 +72,7 @@ class MemberJoinPage(MemberBasePage):
         self.terms_of_use_checkbox.click()
         self.marketing_emails_checkbox.click()
         self.marketing_sms_checkbox.click()
-        self.page.wait_for_timeout(1000)  # Wait for any potential async validation to complete before clicking submit
+        self.page.wait_for_timeout(1000)
+        # Wait for any potential async validation to complete before clicking submit
         self.wait_for_page_load()
         self.submit_button.click()

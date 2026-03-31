@@ -6,11 +6,13 @@ import pytest
 from playwright.sync_api import Browser
 
 from utils.env_config import EnvConfig
-from utils.test_data import Member
 from pages.provider_portal.provider_sign_in_page import ProviderSignInPage
 
 AUTH_STATE_DIR = Path(__file__).parent / ".auth"
 PROVIDER_AUTH_STATE = AUTH_STATE_DIR / "provider_state.json"
+BROWSER_CONTEXT_ARGS = {"permissions": ["notifications", "geolocation"],
+                        "geolocation": {"latitude": 40.7128, "longitude": -74.0060}
+                        } # New York City geolocation
 
 
 @pytest.fixture(scope='session')
@@ -18,7 +20,7 @@ def provider_auth_state(browser: Browser) -> Path:
     """Log in to Provider once per session, save storageSpace for reuse."""
     AUTH_STATE_DIR.mkdir(exist_ok=True)
 
-    context = browser.new_context()
+    context = browser.new_context(**BROWSER_CONTEXT_ARGS)
     page = context.new_page()
 
     sign_in_page = ProviderSignInPage(page)
@@ -34,9 +36,9 @@ def provider_auth_state(browser: Browser) -> Path:
     return PROVIDER_AUTH_STATE
 
 @pytest.fixture()
-def provider_page(browser: Browser, provider_auth_state: Path):
+def provider_page(browser: Browser, provider_auth_state: Path): # pylint: disable=redefined-outer-name
     """Provide a fresh page with auth state loaded for each test."""
-    context = browser.new_context(storage_state=str(provider_auth_state))
+    context = browser.new_context(storage_state=str(provider_auth_state), **BROWSER_CONTEXT_ARGS)
     page = context.new_page()
     yield page
     context.close()
@@ -44,9 +46,7 @@ def provider_page(browser: Browser, provider_auth_state: Path):
 @pytest.fixture()
 def member_page(browser: Browser):
     """Provide a fresh unauthenticated member page."""
-    context = browser.new_context()
+    context = browser.new_context(**BROWSER_CONTEXT_ARGS)
     page = context.new_page()
     yield page
     context.close()
-
-

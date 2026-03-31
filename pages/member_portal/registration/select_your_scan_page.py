@@ -38,16 +38,18 @@ class SelectYourScanPage(MemberBasePage):
         """Select gender at birth."""
         self.gender_combobox.wait_for(state="visible")
         self.gender_combobox.click()
-        self.page.get_by_role(role="option", name=gender).filter(has_text=re.compile(f"^{gender}$", re.IGNORECASE)).click()
+        self.page.get_by_role(role="option", name=gender).filter(
+            has_text=re.compile(f"^{gender}$", re.IGNORECASE)).click()
 
     def select_scan_products(self, product_names: list[str]):
         """Select products to scan."""
         for name in product_names:
-            card = self.page.locator(".encounter-card").filter(has=self.page.locator("p.encounter-title", has_text=re.compile(f"^{name}$", re.IGNORECASE)))
+            card = self.page.locator(".encounter-card").filter(has=self.page
+            .locator("p.encounter-title", has_text=re.compile(f"^{name}$", re.IGNORECASE)))
             card.click()
 
-    def fill_select_your_scan_form(self, member: Member):
-        """Fill select you scan form."""
+    def select_your_scan(self, member: Member):
+        """Select your scan."""
         self.wait_for_this_page_url()
         self.date_of_birth_textbox.fill(member.date_of_birth.replace("-",""))
         self.select_gender(member.gender)

@@ -12,17 +12,20 @@ class ReserveYourAppointmentPage(MemberBasePage):
     @property
     def card_payment_card(self):
         """Credit card payment card"""
-        return self.page.locator("div.p-PaymentElement > div.p-PaymentAccordionButtonText", has_text='card')
+        return self.page.locator("div.p-PaymentElement > div.p-PaymentAccordionButtonText",
+                                has_text='card')
 
     @property
     def affirm_payment_card(self):
         """Affirm payment card"""
-        return self.page.locator("div.p-PaymentElement > div.p-PaymentAccordionButtonText", has_text='affirm')
+        return self.page.locator("div.p-PaymentElement > div.p-PaymentAccordionButtonText",
+                                has_text='affirm')
 
     @property
     def bank_payment_card(self):
         """Bank payment card"""
-        return self.page.locator("div.p-PaymentElement > div.p-PaymentAccordionButtonText", has_text='bank')
+        return self.page.locator("div.p-PaymentElement > div.p-PaymentAccordionButtonText",
+                                has_text='bank')
 
     @property
     def back_button(self):
@@ -62,8 +65,8 @@ class ReserveYourAppointmentPage(MemberBasePage):
         """Credit card postal code comboBox"""
         return self.card_payment_card.locator("#payment-postalCodeInput")
 
-    def fill_credit_card_details(self, card: CardDetails, postal_code: str):
-        """Fill in the credit card details."""
+    def add_credit_card(self, card: CardDetails, postal_code: str):
+        """Add the credit card."""
         self.credit_card_number_textbox.fill(card.number)
         self.credit_card_expiration_date_textbox.fill(card.expiry)
         self.credit_card_security_code.fill(card.cvc)
