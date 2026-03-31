@@ -12,6 +12,7 @@ class EnvConfig:
     MEMBER_SELECT_YOUR_SCAN_URL = os.getenv("MEMBER_SELECT_YOUR_SCAN_URL", f"{MEMBER_BASE_URL}/sign-up/select-plan")
     MEMBER_SCHEDULE_YOUR_SCAN_URL = os.getenv("MEMBER_SCHEDULE_YOUR_SCAN_URL", f"{MEMBER_BASE_URL}/sign-up/schedule-scan")
     MEMBER_RESERVE_YOUR_APPOINTMENT_URL = os.getenv("MEMBER_RESERVE_YOUR_APPOINTMENT_URL", f"{MEMBER_BASE_URL}/sign-up/reserve-appointment")
+    MEMBER_SCAN_CONFIRM_URL = os.getenv("MEMBER_SCAN_CONFIRM_URL", f"{MEMBER_BASE_URL}/sign-up/scan-confirm")
 
     # Provier Portal URLs
     PROVIDER_BASE_URL = os.getenv("PROVIDER_BASE_URL", "https://staging-hub.ezra.com").rstrip("/")

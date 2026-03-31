@@ -25,45 +25,63 @@ class ScheduleYourScanPage(MemberBasePage):
         """Continue Button"""
         return self.page.get_by_role(role="button", name="continue")
 
+    @property
+    def calendar(self):
+        """Calendar widget for selecting scan date."""
+        return self.page.locator("div.datepicker")
+
+    @property
+    def time_slots(self):
+        """Time slots for scan appointments."""
+        return self.page.locator("div.appointments__individual-appointment")
+    
+    @property
+    def location_cards(self):
+        """Scan location cards."""
+        return self.page.locator(".location-card")
+
     def select_first_scan_location_card(self):
         """Select first scan location card."""
-        return self.page.locator(".location-card").first.click()
+        expect(self.location_cards.first).to_be_visible(timeout=5000)
+        self.page.wait_for_timeout(1000)  # Wait for potential animations to complete
+        return self.location_cards.first.click()
 
     def select_state(self, state: str):
         """Select state from member state value."""
-        self.state_combobox.wait_for(state="visible")
+        expect(self.state_combobox).to_be_enabled(timeout=5000)
         self.state_combobox.click()
         self.page.get_by_role(role="option", name=state).filter(has_text=state).click()
 
     def select_first_active_date(self, max_months: int = 12):
         """Click the first active date in the calendar"""
-        calendar = self.page.locator("div.datepicker")
+        expect(self.calendar).to_be_visible(timeout=5000)
+        self.page.wait_for_timeout(5000)  # Wait for potential animations to complete
         next_month_button = self.page.locator("div.arrows").locator("button.header-btn").nth(1)
 
         for _ in range(max_months):
-            active_dates = calendar.locator("div:has(>span[aria-disabled='false'])")
+            active_dates = self.calendar.locator("div:has(span[aria-disabled='false'])")
             if active_dates.count() > 0:
                 first_active_date = active_dates.first
-                first_active_date.wait_for(state="visible")
+                expect(first_active_date).to_be_enabled(timeout=5000)
+                self.page.wait_for_timeout(5000)  # Wait for potential animations to complete
                 first_active_date.click()
                 return
 
             next_month_button.click()
-            calendar.wait_for(state="visible")
+            expect(self.calendar).to_be_enabled(timeout=5000)
 
         raise AssertionError("No active scan dates found for user.")
 
     def select_first_available_time_slot(self):
         """Click the first available time slot available on the selected day."""
-        return self.page.locator("div.appointments__individual-appointment").first.click()
+        expect(self.time_slots.first).to_be_visible(timeout=5000)
+        return self.time_slots.first.click()
 
     def schedule_your_scan(self):
         """Schedule your scan."""
         self.wait_for_this_page_url()
         self.find_closest_centers_to_me_button.click()
-        self.wait_for_page_load()
         self.select_first_scan_location_card()
-        self.wait_for_page_load()
         self.select_first_active_date()
         self.select_first_available_time_slot()
         expect(self.continue_button).to_be_enabled(timeout=5000)

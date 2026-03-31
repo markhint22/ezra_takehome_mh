@@ -1,5 +1,7 @@
 """Page object page for Reserve Your Appointment Page."""
 
+from playwright.sync_api import expect
+
 from pages.member_portal.member_base_page import MemberBasePage
 from utils.env_config import EnvConfig
 from utils.stripe_helpers import CardDetails
@@ -41,32 +43,38 @@ class ReserveYourAppointmentPage(MemberBasePage):
     #Card paypment card fields
 
     @property
+    def payments_iframe(self):
+        """Credit card iframe"""
+        return self.page.frame_locator("iframe[title='Secure payment input frame']").first
+
+    @property
     def credit_card_number_textbox(self):
         """Credit card number textbox"""
-        return self.card_payment_card.locator("#payment-numberInput")
+        return self.payments_iframe.locator("#payment-numberInput")
 
     @property
     def credit_card_expiration_date_textbox(self):
         """Credit card expiration date"""
-        return self.card_payment_card.locator("#payment-expiryInput")
+        return self.payments_iframe.locator("#payment-expiryInput")
 
     @property
     def credit_card_security_code(self):
         """Credit card expiration date"""
-        return self.card_payment_card.locator("#payment-cvcInput")
+        return self.payments_iframe.locator("#payment-cvcInput")
 
     @property
     def credit_card_country_combobox(self):
         """Credit card country comboBox"""
-        return self.card_payment_card.locator("#payment-countryInput")
+        return self.payments_iframe.locator("#payment-countryInput")
 
     @property
     def credit_card_postal_code_textbox(self):
         """Credit card postal code comboBox"""
-        return self.card_payment_card.locator("#payment-postalCodeInput")
+        return self.payments_iframe.locator("#payment-postalCodeInput")
 
     def add_credit_card(self, card: CardDetails, postal_code: str):
         """Add the credit card."""
+        expect(self.credit_card_number_textbox).to_be_visible()
         self.credit_card_number_textbox.fill(card.number)
         self.credit_card_expiration_date_textbox.fill(card.expiry)
         self.credit_card_security_code.fill(card.cvc)
