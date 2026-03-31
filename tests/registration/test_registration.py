@@ -16,7 +16,7 @@ class TestMemberRegistration:
 
     def test_register_new_member(self, member_page):
         """Verify a new member can be registered successfully."""
-        member = Member(scan_products=[ScanProducts.MRI_SCAN])
+        member = Member(scan_product=ScanProducts.MRI_SCAN)
 
         sign_in_page = MemberSignInPage(member_page)
         sign_in_page.navigate()
@@ -45,3 +45,5 @@ class TestMemberRegistration:
         assert confirmed_appointment_details["time"] == "10:30 AM EDT"
 
         scan_confirm_page.begin_medical_questionnaire_button.click()
+
+        scan_confirm_page.wait_for_page_load()

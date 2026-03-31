@@ -20,7 +20,7 @@ class ScanProducts:
 class Member:
     """Member Object."""
 
-    def __init__(self, scan_products=None):
+    def __init__(self, scan_product=None):
         self.first_name = fake.first_name()
         self.last_name = fake.last_name()
         self.email = fake.email()
@@ -30,7 +30,7 @@ class Member:
         self.postal_code = fake.postalcode_in_state()
         self.date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=90).strftime("%m-%d-%Y")
         self.gender = random.choice(["Male", "Female"])
-        self.scan_products = scan_products if scan_products else []
+        self.scan_product = scan_product if scan_product else None
 
     @property
     def full_name(self):

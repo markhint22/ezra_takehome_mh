@@ -41,17 +41,19 @@ class SelectYourScanPage(MemberBasePage):
         self.page.get_by_role(role="option", name=gender).filter(
             has_text=re.compile(f"^{gender}$", re.IGNORECASE)).click()
 
-    def select_scan_products(self, product_names: list[str]):
-        """Select products to scan."""
-        for name in product_names:
-            card = self.page.locator(".encounter-card").filter(has=self.page
-            .locator("p.encounter-title", has_text=re.compile(f"^{name}$", re.IGNORECASE)))
-            card.click()
+    def select_scan_product(self, product_name: str):
+        """Select one product to scan."""
+        card = self.page.locator(".encounter-card").filter(has=self.page
+            .locator("p.encounter-title", has_text=re.compile(f"^{product_name}$", re.IGNORECASE))
+            ).first
+        card_text = card.inner_text().strip()
+        card.click()
+        return card_text
 
     def select_your_scan(self, member: Member):
         """Select your scan."""
         self.wait_for_this_page_url()
         self.date_of_birth_textbox.fill(member.date_of_birth.replace("-",""))
         self.select_gender(member.gender)
-        self.select_scan_products(member.scan_products)
+        self.select_scan_product(member.scan_product)
         self.continue_button.click()
