@@ -52,7 +52,8 @@ class ScheduleYourScanPage(MemberBasePage):
         location_address = first_card.locator("p").nth(2).text_content().strip()
 
         first_card.click()
-        return {"selected_location_name": location_name, "selected_location_address": location_address}
+        return {"selected_location_name": location_name,
+            "selected_location_address": location_address}
 
     def select_state(self, state: str):
         """Select state from member state value."""
@@ -67,16 +68,21 @@ class ScheduleYourScanPage(MemberBasePage):
         next_month_button = self.page.locator("div.arrows").locator("button.header-btn").nth(1)
 
         for _ in range(max_months):
-            active_dates = self.calendar.locator(".vuecal__cell:not(.vuecal__cell--disabled):not(.vuecal__cell--out-of-scope)")
+            active_dates = self.calendar.locator(
+                ".vuecal__cell:not(.vuecal__cell--disabled):not(.vuecal__cell--out-of-scope)")
             if active_dates.count() > 0:
                 first_active_date = active_dates.first
                 expect(first_active_date).to_be_enabled(timeout=5000)
                 self.page.wait_for_timeout(5000)  # Wait for potential animations to complete
 
 
-                calendar_header = self.calendar.locator("div.calendar-title").locator("button.trigger-btn").locator("p").text_content().strip()
-                day_text = first_active_date.locator("span.vc-day-content").locator("div").nth(1).text_content().strip()
-                formatted_date = f"{calendar_header.rsplit(' ', 1)[0]} {day_text}, {calendar_header.rsplit(' ', 1)[1]}"
+                calendar_header = self.calendar.locator(
+                    "div.calendar-title").locator("button.trigger-btn").locator(
+                    "p").text_content().strip()
+                day_text = first_active_date.locator("span.vc-day-content").locator(
+                    "div").nth(1).text_content().strip()
+                formatted_date = f"{calendar_header.rsplit(' ', 1)[0]} {day_text}, {
+                    calendar_header.rsplit(' ', 1)[1]}"
 
                 first_active_date.click()
                 return formatted_date

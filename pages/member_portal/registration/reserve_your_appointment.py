@@ -71,7 +71,7 @@ class ReserveYourAppointmentPage(MemberBasePage):
     def credit_card_postal_code_textbox(self):
         """Credit card postal code comboBox"""
         return self.payments_iframe.locator("#payment-postalCodeInput")
-    
+
     # Optional fields that appear after entering payment details
 
     @property
@@ -84,16 +84,16 @@ class ReserveYourAppointmentPage(MemberBasePage):
         """Mobile phone textbox that appears after entering payment details."""
         return self.payments_iframe.locator("#payment-linkMobilePhoneInput")
 
-    def add_credit_card(self, card: CardDetails, postal_code: str, email: str = None, mobile_phone: str = None):
+    def add_credit_card(self, card: CardDetails, postal: str, email: str = None, phone: str = None):
         """Add the credit card."""
         expect(self.credit_card_number_textbox).to_be_visible()
         self.credit_card_number_textbox.fill(card.number)
         self.credit_card_expiration_date_textbox.fill(card.expiry)
         self.credit_card_security_code.fill(card.cvc)
-        self.credit_card_postal_code_textbox.fill(postal_code)
+        self.credit_card_postal_code_textbox.fill(postal)
 
         if email is not None:
             self.email_textbox.fill(email)
-        if mobile_phone is not None:
-            self.mobile_phone_textbox.fill(mobile_phone)
+        if phone is not None:
+            self.mobile_phone_textbox.fill(phone)
         self.continue_button.click()
