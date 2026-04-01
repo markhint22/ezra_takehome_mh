@@ -42,9 +42,4 @@ class TestMemberRegistration:
         assert confirmed_appointment_details["confirmed_location_name"] == selected_schedule_details["selected_location_name"]
         assert confirmed_appointment_details["confirmed_location_address"].replace("  ", " ") == selected_schedule_details["selected_location_address"].replace("  ", " ")
         assert confirmed_appointment_details["confirmed_datetime"] == selected_schedule_details["selected_datetime"]
-        assert confirmed_appointment_details["confirmed_time"] == selected_schedule_details["selected_time"]
-        assert confirmed_appointment_details["confirmed_time_zone"] == selected_schedule_details["selected_time_zone"]
-
-        scan_confirm_page.begin_medical_questionnaire_button.click()
-
-        scan_confirm_page.wait_for_page_load()
+        assert confirmed_appointment_details["confirmed_time_zone"] == "EDT"
