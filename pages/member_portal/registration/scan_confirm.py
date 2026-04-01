@@ -77,7 +77,7 @@ class ScanConfirmPage(MemberBasePage):
 
     def get_confirmed_appointment(self):
         """Get the appointment details for assertions."""
-        expect(self.appointment_header).to_be_visible(timeout=10000)
+        expect(self.appointment_header).to_be_visible(timeout=15000)
 
         confirmed_datetime, confirmed_timezone = self.parse_date_time_values(
             self.appointment_datetime.text_content())

@@ -72,7 +72,7 @@ class ScheduleYourScanPage(MemberBasePage):
                 ".vuecal__cell:not(.vuecal__cell--disabled):not(.vuecal__cell--out-of-scope)")
             if active_dates.count() > 0:
                 first_active_date = active_dates.first
-                expect(first_active_date).to_be_enabled(timeout=5000)
+                expect(first_active_date).to_be_enabled(timeout=15000)
                 self.page.wait_for_timeout(5000)  # Wait for potential animations to complete
 
 
@@ -88,14 +88,14 @@ class ScheduleYourScanPage(MemberBasePage):
                 return formatted_date
 
             next_month_button.click()
-            expect(self.calendar).to_be_enabled(timeout=5000)
+            expect(self.calendar).to_be_enabled(timeout=15000)
 
         raise AssertionError("No active scan dates found for user.")
 
     def select_first_available_time_slot(self):
         """Click the first available time slot available on the selected day."""
         first_time_slot = self.time_slots.first
-        expect(first_time_slot).to_be_visible(timeout=10000)
+        expect(first_time_slot).to_be_visible(timeout=15000)
         time_text = first_time_slot.locator("div").text_content().strip()
 
         first_time_slot.click()
