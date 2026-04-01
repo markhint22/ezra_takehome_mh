@@ -1,6 +1,8 @@
 """Member Registration Flow Tests"""
 
 import pytest
+from playwright.sync_api import expect
+
 from pages.member_portal.member_sign_in_page import MemberSignInPage
 from pages.member_portal.member_join_page import MemberJoinPage
 from pages.member_portal.registration.select_your_scan_page import SelectYourScanPage
@@ -48,3 +50,29 @@ class TestMemberRegistration:
         assert confirmed_appointment_details[
             "confirmed_datetime"] == selected_schedule_details["selected_datetime"]
         assert confirmed_appointment_details["confirmed_time_zone"] in ["EDT", "EST"]
+
+
+    def test_register_new_member_declined_credit_card_blocks_registration(self, member_page):
+        """Verify that a declined credit card blocks registration."""
+        member = Member(scan_product=ScanProducts.LUNGS_CT_SCAN)
+
+        sign_in_page = MemberSignInPage(member_page)
+        sign_in_page.navigate()
+        sign_in_page.join_button.click()
+
+        join_page = MemberJoinPage(member_page)
+        join_page.add_basic_member_info(member)
+
+        select_scan_page = SelectYourScanPage(member_page)
+        select_scan_page.select_your_scan(member)
+
+        schedule_scan_page = ScheduleYourScanPage(member_page)
+        schedule_scan_page.schedule_your_scan()
+
+        reserve_your_appointment_page = ReserveYourAppointmentPage(member_page)
+        reserve_your_appointment_page.add_credit_card(
+            stripe_helpers.DECLINED_CARD_DETAILS,
+            member.postal_code, member.email, member.phone_number)
+
+        expect(reserve_your_appointment_page.declined_card_error_message).to_be_visible(timeout=10000)
+        expect(reserve_your_appointment_page.declined_payment_error_message).to_be_visible(timeout=10000)

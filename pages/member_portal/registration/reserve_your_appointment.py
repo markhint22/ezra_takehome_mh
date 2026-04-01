@@ -39,6 +39,10 @@ class ReserveYourAppointmentPage(MemberBasePage):
         """Continue Button"""
         return self.page.get_by_role(role="button", name='continue')
 
+    @property
+    def declined_payment_error_message(self):
+        """Error message shown when a declined payment is used."""
+        return self.page.locator("p", has_text="Your payment method was declined.")
 
     #Card paypment card fields
 
@@ -71,6 +75,11 @@ class ReserveYourAppointmentPage(MemberBasePage):
     def credit_card_postal_code_textbox(self):
         """Credit card postal code comboBox"""
         return self.payments_iframe.locator("#payment-postalCodeInput")
+
+    @property
+    def declined_card_error_message(self):
+        """Error message shown when a declined card is used."""
+        return self.payments_iframe.locator("p", has_text="Your card was declined.")
 
     # Optional fields that appear after entering payment details
 

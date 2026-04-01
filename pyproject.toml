@@ -34,6 +34,8 @@ addopts = "--headed -vv --tb=long -rA"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = "test_*"
+log_cli = true
+log_cli_level = "INFO"
 markers = [
     "booking: booking flow tests",
     "security: auth and data isolation tests",

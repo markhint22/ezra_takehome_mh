@@ -25,7 +25,7 @@ class Member:
         self.last_name = fake.last_name()
         self.email = fake.email()
         self.password = DEFAULT_PASSWORD
-        self.phone_number = fake.numerify("###-###-####")
+        self.phone_number = fake.numerify("701-###-####")
         self.state = fake.state()
         self.postal_code = fake.postalcode_in_state()
         self.date_of_birth = fake.date_of_birth(minimum_age=18, maximum_age=90).strftime("%m-%d-%Y")
