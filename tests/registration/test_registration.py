@@ -51,7 +51,6 @@ class TestMemberRegistration:
             "confirmed_datetime"] == selected_schedule_details["selected_datetime"]
         assert confirmed_appointment_details["confirmed_time_zone"] in ["EDT", "EST"]
 
-
     def test_register_new_member_declined_credit_card_blocks_registration(self, member_page):
         """Verify that a declined credit card blocks registration."""
         member = Member(scan_product=ScanProducts.LUNGS_CT_SCAN)
@@ -74,5 +73,20 @@ class TestMemberRegistration:
             stripe_helpers.DECLINED_CARD_DETAILS,
             member.postal_code, member.email, member.phone_number)
 
-        expect(reserve_your_appointment_page.declined_card_error_message).to_be_visible(timeout=10000)
-        expect(reserve_your_appointment_page.declined_payment_error_message).to_be_visible(timeout=10000)
+        expect(reserve_your_appointment_page.declined_card_error_message).to_be_visible(
+            timeout=10000)
+        expect(reserve_your_appointment_page.declined_payment_error_message).to_be_visible(
+            timeout=10000)
+
+    def test_register_new_member_required_fields_not_provided(self, member_page):
+        """Verify that a new member cannot be registered if required fields are not provided."""
+        member = Member(scan_product=ScanProducts.MRI_SCAN)
+        member.last_name = ""
+
+        sign_in_page = MemberSignInPage(member_page)
+        sign_in_page.navigate()
+        sign_in_page.join_button.click()
+
+        join_page = MemberJoinPage(member_page)
+        join_page.add_basic_member_info(member)
+        expect(join_page.last_name_missing_error_message).to_be_visible(timeout=10000)

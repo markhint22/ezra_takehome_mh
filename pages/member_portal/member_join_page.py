@@ -61,6 +61,11 @@ class MemberJoinPage(MemberBasePage):
         """Submit button"""
         return self.page.get_by_role(role="button", name="submit")
 
+    @property
+    def last_name_missing_error_message(self):
+        """Last Name Missing Error Message"""
+        return self.page.locator("p", has_text="The Legal Last Name field is required.")
+
     def add_basic_member_info(self, member: Member):
         """Add basic member information."""
         self.wait_for_this_page_url()
