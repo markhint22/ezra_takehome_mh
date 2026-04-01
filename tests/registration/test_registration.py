@@ -1,5 +1,6 @@
 """Member Registration Flow Tests"""
 
+import re
 import pytest
 from playwright.sync_api import expect
 
@@ -90,3 +91,5 @@ class TestMemberRegistration:
         join_page = MemberJoinPage(member_page)
         join_page.add_basic_member_info(member)
         expect(join_page.last_name_missing_error_message).to_be_visible(timeout=10000)
+        expect(join_page.submit_button).to_have_class(
+            re.compile(r".+--appear-disabled-new"), timeout=10000)
