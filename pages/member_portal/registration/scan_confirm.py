@@ -63,7 +63,7 @@ class ScanConfirmPage(MemberBasePage):
         date_part, separator, right = datetime_str.partition("\u2022")
         if not separator:
             raise ValueError(f"Unexpected date/time format: '{datetime_str}'")
-        
+
         time_part, tz = right.strip().rsplit(" ", 1)
         combined = f"{date_part.strip()} {time_part.strip()}"
 

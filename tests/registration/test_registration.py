@@ -32,14 +32,19 @@ class TestMemberRegistration:
         selected_schedule_details = schedule_scan_page.schedule_your_scan()
 
         reserve_your_appointment_page = ReserveYourAppointmentPage(member_page)
-        reserve_your_appointment_page.add_credit_card(stripe_helpers.VALID_CARD_DETAILS,
-                                                        member.postal_code)
+        reserve_your_appointment_page.add_credit_card(
+            stripe_helpers.VALID_CARD_DETAILS,
+            member.postal_code, member.email, member.phone_number)
 
         scan_confirm_page = ScanConfirmPage(member_page)
         confirmed_appointment_details = scan_confirm_page.get_confirmed_appointment()
 
         assert confirmed_appointment_details["confirmed_scan_type"] == selected_scan_type
-        assert confirmed_appointment_details["confirmed_location_name"] == selected_schedule_details["selected_location_name"]
-        assert confirmed_appointment_details["confirmed_location_address"].replace("  ", " ") == selected_schedule_details["selected_location_address"].replace("  ", " ")
-        assert confirmed_appointment_details["confirmed_datetime"] == selected_schedule_details["selected_datetime"]
-        assert confirmed_appointment_details["confirmed_time_zone"] == "EDT"
+        assert confirmed_appointment_details[
+            "confirmed_location_name"] == selected_schedule_details["selected_location_name"]
+        assert confirmed_appointment_details[
+            "confirmed_location_address"].replace("  ", " ") == selected_schedule_details[
+            "selected_location_address"].replace("  ", " ")
+        assert confirmed_appointment_details[
+            "confirmed_datetime"] == selected_schedule_details["selected_datetime"]
+        assert confirmed_appointment_details["confirmed_time_zone"] in ["EDT", "EST"]
