@@ -97,6 +97,7 @@ utils/
 
 - Deterministic Test Data:
   Test user data is generated through test_data.py to reduce collisions and improve repeatability.
+  For Stripe compatibility, phone area code is currently hardcoded to a known valid value for simplicity and deterministic reliability.
 
 ## Assumptions
 
@@ -200,6 +201,7 @@ Add axe-core integration to validate WCAG compliance on critical user flows.
 1. **Test Data Management:**
 Implement a shared test data service or fixture factory to reduce duplication.
 Add support for pre-created test users to enable test isolation without setup overhead.
+Replace the single hardcoded area code with a vetted list of valid area codes and controlled selection to keep reliability while improving data realism.
 
 1. **Environment Parameterization and Dynamic Config:**
 Add an explicit environment parameter (for example: local, staging, production-like) to test execution.
