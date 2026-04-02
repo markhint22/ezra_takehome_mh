@@ -15,6 +15,16 @@ BROWSER_CONTEXT_ARGS = {"permissions": ["notifications", "geolocation"],
                         } # New York City geolocation
 
 
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args): # pylint: disable=redefined-outer-name
+    """Use environment-driven Playwright launch options."""
+    return {
+        **browser_type_launch_args,
+        "headless": EnvConfig.HEADLESS,
+        "slow_mo": EnvConfig.SLOW_MO,
+    }
+
+
 @pytest.fixture(scope='session')
 def provider_auth_state(browser: Browser) -> Path:
     """Log in to Provider once per session, save storageSpace for reuse."""

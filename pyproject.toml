@@ -30,7 +30,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--headed -vv --tb=long -rA"
+addopts = "-vv --tb=long -rA"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = "test_*"

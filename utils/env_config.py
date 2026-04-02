@@ -1,6 +1,11 @@
 """Environment configuration."""
 import os
 
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
 
 class EnvConfig:
     """Centralized configuration loaded from .env file."""
@@ -9,10 +14,14 @@ class EnvConfig:
     MEMBER_BASE_URL = os.getenv("MEMBER_BASE_URL", "https://myezra-staging.ezra.com").rstrip("/")
     MEMBER_SIGN_IN_URL = os.getenv("MEMBER_SIGN_IN_URL", f"{MEMBER_BASE_URL}/signin")
     MEMBER_JOIN_URL = os.getenv("MEMBER_JOIN_URL", f"{MEMBER_BASE_URL}/join")
-    MEMBER_SELECT_YOUR_SCAN_URL = os.getenv("MEMBER_SELECT_YOUR_SCAN_URL", f"{MEMBER_BASE_URL}/sign-up/select-plan")
-    MEMBER_SCHEDULE_YOUR_SCAN_URL = os.getenv("MEMBER_SCHEDULE_YOUR_SCAN_URL", f"{MEMBER_BASE_URL}/sign-up/schedule-scan")
-    MEMBER_RESERVE_YOUR_APPOINTMENT_URL = os.getenv("MEMBER_RESERVE_YOUR_APPOINTMENT_URL", f"{MEMBER_BASE_URL}/sign-up/reserve-appointment")
-    MEMBER_SCAN_CONFIRM_URL = os.getenv("MEMBER_SCAN_CONFIRM_URL", f"{MEMBER_BASE_URL}/sign-up/scan-confirm")
+    MEMBER_SELECT_YOUR_SCAN_URL = os.getenv(
+        "MEMBER_SELECT_YOUR_SCAN_URL", f"{MEMBER_BASE_URL}/sign-up/select-plan")
+    MEMBER_SCHEDULE_YOUR_SCAN_URL = os.getenv(
+        "MEMBER_SCHEDULE_YOUR_SCAN_URL", f"{MEMBER_BASE_URL}/sign-up/schedule-scan")
+    MEMBER_RESERVE_YOUR_APPOINTMENT_URL = os.getenv(
+        "MEMBER_RESERVE_YOUR_APPOINTMENT_URL", f"{MEMBER_BASE_URL}/sign-up/reserve-appointment")
+    MEMBER_SCAN_CONFIRM_URL = os.getenv(
+        "MEMBER_SCAN_CONFIRM_URL", f"{MEMBER_BASE_URL}/sign-up/scan-confirm")
 
     # Provier Portal URLs
     PROVIDER_BASE_URL = os.getenv("PROVIDER_BASE_URL", "https://staging-hub.ezra.com").rstrip("/")
