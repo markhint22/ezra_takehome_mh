@@ -104,5 +104,5 @@ class ReserveYourAppointmentPage(MemberBasePage):
         if email is not None:
             self.email_textbox.fill(email)
         if phone is not None:
-            self.mobile_phone_textbox.fill(phone)
+            self.mobile_phone_textbox.fill(phone.replace("-", ""))
         self.continue_button.click()

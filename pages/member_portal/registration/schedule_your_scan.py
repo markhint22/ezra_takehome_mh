@@ -45,7 +45,7 @@ class ScheduleYourScanPage(MemberBasePage):
     def select_first_scan_location_card(self):
         """Select first scan location card."""
         expect(self.location_cards.first).to_be_visible(timeout=5000)
-        self.page.wait_for_timeout(1000)  # Wait for potential animations to complete
+        self.page.wait_for_timeout(1000)
         first_card = self.location_cards.first
 
         location_name = first_card.locator("p").nth(0).text_content().strip()
@@ -64,7 +64,9 @@ class ScheduleYourScanPage(MemberBasePage):
     def select_first_active_date(self, max_months: int = 12):
         """Click the first active date in the calendar"""
         expect(self.calendar).to_be_visible(timeout=30000)
-        self.page.wait_for_timeout(5000)  # Wait for potential animations to complete
+        calendar_cells = self.calendar.locator(".vuecal__cell").first
+        expect(calendar_cells).to_be_visible(
+            timeout=15000)
         next_month_button = self.page.locator("div.arrows").locator("button.header-btn").nth(1)
 
         for _ in range(max_months):
@@ -73,8 +75,6 @@ class ScheduleYourScanPage(MemberBasePage):
             if active_dates.count() > 0:
                 first_active_date = active_dates.first
                 expect(first_active_date).to_be_enabled(timeout=15000)
-                self.page.wait_for_timeout(5000)  # Wait for potential animations to complete
-
 
                 calendar_header = self.calendar.locator(
                     "div.calendar-title").locator("button.trigger-btn").locator(

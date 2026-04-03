@@ -155,8 +155,8 @@ Provides rapid feedback without external dependencies.
 **Flakiness and Resilience:**
 
 - Main sources: Network delays, date/time boundaries (calendar availability), Stripe API latency.
-- Mitigations implemented: Implicit waits were used as much as possible. Explicit `expect(...).to_be_visible(timeout=10000)` waits used instead of hardcoded sleeps; context setup in conftest.
-- Future: Implement retry-on-flakiness via pytest-rerunfailures with smarter failure detection. Remove remaining explicit waits.
+- Mitigations implemented: Playwright's built-in auto-waiting is relied upon wherever possible; `expect(...)` assertions are used for flow synchronization rather than hardcoded sleeps; context setup is centralized in conftest.
+- Future: Implement retry-on-flakiness via pytest-rerunfailures with smarter failure detection.
 
 **Test Data Lifecycle:**
 

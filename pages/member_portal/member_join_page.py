@@ -1,5 +1,7 @@
 """Page object for the member join page."""
 
+from playwright.sync_api import expect
+
 from pages.member_portal.member_base_page import MemberBasePage
 from utils.env_config import EnvConfig
 from utils.test_data import Member
@@ -77,7 +79,6 @@ class MemberJoinPage(MemberBasePage):
         self.terms_of_use_checkbox.click()
         self.marketing_emails_checkbox.click()
         self.marketing_sms_checkbox.click()
+        expect(self.submit_button).to_be_enabled(timeout=15000)
         self.page.wait_for_timeout(1000)
-        # Wait for any potential async validation to complete before clicking submit
-        self.wait_for_page_load()
         self.submit_button.click()
