@@ -26,7 +26,10 @@ End-to-end UI automation suite for member and provider workflows using Playwrigh
 Run all tests:
 poetry run pytest
 
-Run registration tests only:
+Run all registration tests using marker:
+poetry run pytest -m member_registration
+
+Run all registration tests using folder:
 poetry run pytest tests/registration -v
 
 Run a single registration test:
